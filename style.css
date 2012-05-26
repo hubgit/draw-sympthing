@@ -1,0 +1,65 @@
+@font-face {
+  font-family: 'Oxygen';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Oxygen'), url('oxygen.woff') format('woff');
+}
+
+body {
+	font-family: sans-serif;
+}
+
+.select-show, .draw-show, .guess-show { display: none; }
+.select .select-show, .draw .draw-show, .guess .guess-show { display: block; }
+
+#message {
+	color: #777;
+}
+
+#container {
+	position: relative;
+	width: 400px; 
+	height: 450px; 
+	text-align: center;
+}
+
+#background { 
+	height: 400px; 
+	opacity: 0.5;
+}
+
+#input { 
+	cursor: crosshair;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#words {
+	list-style-type: none;
+	width: 30em;
+}
+
+.word { 
+	cursor: pointer; 
+	padding: 5px;
+	font-family: 'Oxygen', sans-serif; 
+	text-align: center;
+	color: #000;
+}
+
+#words .word:hover { 
+	background: #777;
+	color: #fff;
+}
+
+#boxes .letter {
+	width: 1em;
+	margin: 5px;
+}
+
+#letters .letter {
+	display: inline-block;
+	padding: 5px;
+	font-weight: bold;
+}

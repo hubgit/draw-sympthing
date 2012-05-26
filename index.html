@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Draw Sympthing</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="select">
+	<div class="select-show"><button id="guess">Guess</button></div>
+	
+	<div class="draw-show" id="message">Draw <span id="word" class="word"></span></div>
+
+	<div class="draw-show guess-show" id="container">
+		<img id="background" src="body-outline.png">
+		<canvas id="input" width="400" height="400"></canvas>
+		<div class="draw-show"><button id="save">Done</button></div>
+	</div>
+
+	<ul class="select-show" id="words"></ul>
+
+	<div class="guess-show">
+		<form id="boxes"></form>
+		<div id="letters"></div>
+		<div><button id="show">Show</button></div>
+	</div>
+
+	<script src="jquery.js"></script>
+	<script src="words.js"></script>
+	<script src="draw.js"></script>
+</body>
+
+</html>
