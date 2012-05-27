@@ -10,35 +10,29 @@ var clickX = [],
 	canvasWidth = $("#input").width(),
 	canvasHeight = $("#input").height();
 
-var fetchDrawings = function() {
-	$.ajax({
-		url: "drawings.txt",
-		dataType: "text",
-		success: function(data) {
-			var lines = data.split("\n");
-			var j = Math.floor(Math.random() * (lines.length - 1));
-			console.log(j + "/" + lines.length);
-			var drawing = lines[j];
-			drawing = JSON.parse(drawing);
-			clickX = drawing["x"];
-			clickY = drawing["y"];
-			clickDrag = drawing["drag"];
-			drawLetterBoxes(drawing.word);
-			$("body").removeClass("select").removeClass("draw").addClass("guess");
-			clearCanvas();
-			redraw();
-		},
-	});
+var handleDrawing = function(drawing) {
+	clickX = drawing["x"];
+	clickY = drawing["y"];
+	clickDrag = drawing["drag"];
+	drawLetterBoxes(drawing.word);
+	$("body").removeClass("select").removeClass("draw").addClass("guess");
+	clearCanvas();
+	redraw();
+}
+
+var fetchDrawing = function() {
+	$.getJSON("draw.php", handleDrawing);
 };
+
+$("#guess").on("click", fetchDrawing);
 
 var drawLetterBoxes = function(word) {
 	var letters = word.split("");
-	console.log(letters);
 
-	$("#boxes").empty();
+	$("#boxes").empty().data("word", word);
 
 	letters.forEach(function(letter){ 
-		if (letter.match(/[a-z]/)) {
+		if (letter.match(/[A-Z]/)) {
 			$("<input/>", { "class": "letter" }).appendTo("#boxes");
 		}
 		else {
@@ -48,17 +42,46 @@ var drawLetterBoxes = function(word) {
 
 	letters.sort(randomOrder);
 
-	console.log(letters);
-
 	letters.forEach(function(letter){ 
-		if (!letter.match(/[a-z]/)) return;
+		if (!letter.match(/[A-Z]/)) return;
 		$("<span/>", { "class": "letter", text: letter }).appendTo("#letters");
 	});
 
-	$("#show").on("click", function() {
-		alert(word + "!");
-	}).show();
+	$("#show")
+		.on("click", function() { alert(word + "!") })
+		.show();
 };
+
+var detectWord = function() {
+	var letters = [];
+	$("#boxes .letter").each(function() {
+		switch(this.nodeName) {
+			case 'INPUT':
+				letters.push($(this).val());
+			break;
+
+			case 'SPAN':
+				letters.push($(this).text());
+			break;
+		}
+	});
+	return letters.join("");
+}
+
+$("#boxes").on("keyup", ".letter", function(event) {
+	var node = $(event.target);
+	node.val(node.val().toUpperCase());
+
+	if (detectWord() == $("#boxes").data("word")) {
+		alert("YES!!!!!!");
+		window.location.reload();
+	}
+	node.nextAll("input.letter").first().select();
+});
+
+$("#boxes").on("focus", ".letter", function(event) {
+	$(event.target).val("");
+});
 
 var randomOrder = function() {
   return (Math.round(Math.random())-0.5);
@@ -96,7 +119,7 @@ $("#save").on("click", function() {
 
 	$.ajax({
 		type: "POST",
-		url: "save.php",
+		url: "draw.php",
 		contentType: "application/json; charset=utf-8",
 		data: JSON.stringify({ word: $("#word").text(), x: clickX, y: clickY, drag: clickDrag }),
 		success: function(data) {
@@ -108,8 +131,6 @@ $("#save").on("click", function() {
 		},
 	});
 });
-
-$("#guess").on("click", fetchDrawings);
 
 var addClick = function(x, y, dragging) {
   clickX.push(x);
@@ -137,3 +158,27 @@ function redraw(){
     context.stroke();
   });
 }
+
+var fetchWord = function() {
+	$.ajax({
+		"url": "data/words.txt",
+		"dataType": "text",
+	})
+	.then(function(data){
+		$("#words").empty();
+		var lines = data.split("\n");
+		for (var i = 0; i < 3; i++) {
+			var word = lines[Math.floor(Math.random()*lines.length)];
+			$("<li/>", { class: "word", text: word }).appendTo("#words");
+		}
+	});
+};
+
+$("#words").on("click", ".word", function(event) {
+	var node = $(this);
+	$("#message .word").text(node.text());
+	$("body").removeClass("select").removeClass("guess").addClass("draw");
+	$("#save").text("Save");
+});
+
+fetchWord();

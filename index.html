@@ -7,8 +7,8 @@
 </head>
 
 <body class="select">
-	<div class="select-show"><button id="guess">Guess</button></div>
-	
+	<h1>Draw Sympthing</h1>
+
 	<div class="draw-show" id="message">Draw <span id="word" class="word"></span></div>
 
 	<div class="draw-show guess-show" id="container">
@@ -17,7 +17,11 @@
 		<div class="draw-show"><button id="save">Done</button></div>
 	</div>
 
-	<ul class="select-show" id="words"></ul>
+	<div class="select-show" id="word-selector">
+		<div>Choose a disease to draw:</div>
+		<ul id="words"></ul>
+		<div>or <button id="guess">Guess a disease</button></div>
+	</div>
 
 	<div class="guess-show">
 		<form id="boxes"></form>
@@ -26,7 +30,6 @@
 	</div>
 
 	<script src="jquery.js"></script>
-	<script src="words.js"></script>
 	<script src="draw.js"></script>
 </body>
 

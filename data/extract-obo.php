@@ -11,7 +11,7 @@ foreach ($lines as $line) {
 		list(, $name) = $matches;
 		if (strpos($name, '_') !== false) continue;
 		if (strpos($name, '<') !== false) continue;
-		$words[] = strtolower($name);
+		$words[] = strtoupper($name);
 	} 
 }
 

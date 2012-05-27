@@ -7,6 +7,7 @@
 
 body {
 	font-family: sans-serif;
+	width: 400px;
 }
 
 .select-show, .draw-show, .guess-show { display: none; }
@@ -37,15 +38,23 @@ body {
 
 #words {
 	list-style-type: none;
-	width: 30em;
+	padding-left: 0;
+}
+
+#word-selector {
+	text-align: center;
 }
 
 .word { 
 	cursor: pointer; 
-	padding: 5px;
+	padding: 5px 0;
+	font-family: 'Oxygen', sans-serif; 
+	color: #000;
+}
+
+h1 {
 	font-family: 'Oxygen', sans-serif; 
 	text-align: center;
-	color: #000;
 }
 
 #words .word:hover { 
@@ -56,6 +65,7 @@ body {
 #boxes .letter {
 	width: 1em;
 	margin: 5px;
+	text-transform: uppercase;
 }
 
 #letters .letter {
